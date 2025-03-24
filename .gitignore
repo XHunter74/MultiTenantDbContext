@@ -1,0 +1,4 @@
+.vs/
+MultiTenantDbContext.csproj.user
+bin/
+obj/
