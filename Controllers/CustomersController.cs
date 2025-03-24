@@ -32,7 +32,7 @@ namespace MultiTenantDbContext.Controllers
             return Ok(data);
         }
 
-        [HttpGet()]
+        [HttpGet("all-data")]
         public async Task<IActionResult> GetAllCustomersData()
         {
             var data = new List<Data.Customer.Data>();
