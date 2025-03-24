@@ -16,6 +16,7 @@ public class Program
             .Build()
             // Applying migrations
             .ApplyAdminMigrations()
+            .RunCustomerDbAction()
             .Run();
     }
 

@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.SecretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var customerIdClaim = new Claim("CustomerId", customerId.ToString());
+        var customerIdClaim = new Claim(Constants.CustomerIdClaims, customerId.ToString());
         var userNameClaim = new Claim(ClaimTypes.Name, userName);
 
         var token = new JwtSecurityToken(

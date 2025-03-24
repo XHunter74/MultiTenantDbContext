@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MultiTenantDbContext.Data.Admin;
 using System.Text;
+using MultiTenantDbContext.Extensions;
 
 namespace MultiTenantDbContext;
 
@@ -43,6 +40,7 @@ public class Startup
 
         services.AddDbContext<AdminDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("AdminConnection")));
+        services.ConfigureCustomerContext();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
