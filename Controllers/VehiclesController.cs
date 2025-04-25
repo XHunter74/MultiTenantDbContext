@@ -24,7 +24,9 @@ public class VehiclesController : ControllerBase
         try
         {
             var query = VehicleQueryFactory.GetVehicleQuery(_customerDbContext, vehicleType);
-            var result = await query.ToListAsync().ConfigureAwait(false);
+            var result = await query
+                .AsNoTracking()
+                .ToListAsync().ConfigureAwait(false);
             return Ok(result);
         }
         catch (ArgumentException ex)

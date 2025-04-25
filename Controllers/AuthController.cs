@@ -23,6 +23,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login([FromQuery] string user)
     {
         var userInDb = await _adminDbContext.Users
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Name.ToLower() == user).ConfigureAwait(false);
         if (userInDb == null)
         {
