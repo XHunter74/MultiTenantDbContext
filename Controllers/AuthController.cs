@@ -22,7 +22,8 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromQuery] string user)
     {
-        var userInDb = await _adminDbContext.Users.FirstOrDefaultAsync(u => u.Name.ToLower() == user);
+        var userInDb = await _adminDbContext.Users
+            .FirstOrDefaultAsync(u => u.Name.ToLower() == user).ConfigureAwait(false);
         if (userInDb == null)
         {
             return Unauthorized();

@@ -28,7 +28,7 @@ namespace MultiTenantDbContext.Controllers
         [HttpGet("data")]
         public async Task<IActionResult> Get()
         {
-            var data = await _customerDbContext.Data.ToListAsync();
+            var data = await _customerDbContext.Data.ToListAsync().ConfigureAwait(false);
             return Ok(data);
         }
 
@@ -36,14 +36,14 @@ namespace MultiTenantDbContext.Controllers
         public async Task<IActionResult> GetAllCustomersData()
         {
             var data = new List<Data.Customer.Data>();
-            var customers = await _adminDbContext.Customers.ToListAsync();
+            var customers = await _adminDbContext.Customers.ToListAsync().ConfigureAwait(false);
             foreach (var customer in customers)
             {
                 using var scope = _scopeFactory.CreateScope();
                 var customerIdService = scope.ServiceProvider.GetRequiredService<ICustomerIdService>();
                 customerIdService.CustomerId = customer.Id;
                 var customerDbContext = scope.ServiceProvider.GetRequiredService<CustomerDbContext>();
-                var customerData = await customerDbContext.Data.FirstOrDefaultAsync();
+                var customerData = await customerDbContext.Data.FirstOrDefaultAsync().ConfigureAwait(false);
                 data.Add(customerData);
             }
             return Ok(data);
