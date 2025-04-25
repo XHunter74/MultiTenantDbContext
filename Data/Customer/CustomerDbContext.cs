@@ -9,6 +9,10 @@ public class CustomerDbContext : DbContext
     private readonly IConfiguration _configuration;
 
     public DbSet<Data> Data { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<Car> Cars { get; set; }
+    public DbSet<Truck> Trucks { get; set; }
+    public DbSet<Motorcycle> Motorcycles { get; set; }
 
     public CustomerDbContext(DbContextOptions<CustomerDbContext> options,
         IEnumerable<IInterceptor> interceptors = null,
@@ -35,6 +39,16 @@ public class CustomerDbContext : DbContext
         builder.Entity<Data>(entity =>
         {
             entity.HasKey(x => x.Id);
+        });
+
+        builder.Entity<Vehicle>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.ToTable("Vehicles");
+            entity.HasDiscriminator<VehicleType>("VehicleType")
+                .HasValue<Car>(VehicleType.Car)
+                .HasValue<Truck>(VehicleType.Truck)
+                .HasValue<Motorcycle>(VehicleType.Motorcycle);
         });
     }
 }
