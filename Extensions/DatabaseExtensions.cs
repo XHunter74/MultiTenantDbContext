@@ -5,7 +5,6 @@ using MultiTenantDbContext.Data.Admin;
 using MultiTenantDbContext.Data.Customer;
 using MultiTenantDbContext.Interceptors;
 using MultiTenantDbContext.Services;
-using System.Xml.Linq;
 
 namespace MultiTenantDbContext.Extensions;
 

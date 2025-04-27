@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MultiTenantDbContext.CQRS;
 using MultiTenantDbContext.Data.Customer;
 using MultiTenantDbContext.Factories;
+using MultiTenantDbContext.Features.Queries;
 
 namespace MultiTenantDbContext.Controllers;
 
@@ -11,11 +13,12 @@ namespace MultiTenantDbContext.Controllers;
 [Route("api/[controller]")]
 public class VehiclesController : ControllerBase
 {
-    private readonly CustomerDbContext _customerDbContext;
+    private readonly IQueryHandler<GetVehiclesQuery, List<object>> _getVehiclesQueryHandler;
 
-    public VehiclesController(CustomerDbContext customerDbContext)
+    public VehiclesController(IQueryHandler<GetVehiclesQuery, List<object>> getVehiclesQueryHandler
+        )
     {
-        _customerDbContext = customerDbContext;
+        _getVehiclesQueryHandler = getVehiclesQueryHandler;
     }
 
     [HttpGet]
@@ -23,10 +26,8 @@ public class VehiclesController : ControllerBase
     {
         try
         {
-            var query = VehicleQueryFactory.GetVehicleQuery(_customerDbContext, vehicleType);
-            var result = await query
-                .AsNoTracking()
-                .ToListAsync().ConfigureAwait(false);
+            var query = new GetVehiclesQuery(vehicleType);
+            var result = await _getVehiclesQueryHandler.HandleAsync(query);
             return Ok(result);
         }
         catch (ArgumentException ex)
