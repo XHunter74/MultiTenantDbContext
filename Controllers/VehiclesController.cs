@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CQRSMediatr.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MultiTenantDbContext.CQRS;
 using MultiTenantDbContext.Data.Customer;
-using MultiTenantDbContext.Factories;
 using MultiTenantDbContext.Features.Queries;
 
 namespace MultiTenantDbContext.Controllers;
@@ -13,12 +11,11 @@ namespace MultiTenantDbContext.Controllers;
 [Route("api/[controller]")]
 public class VehiclesController : ControllerBase
 {
-    private readonly IQueryHandler<GetVehiclesQuery, List<object>> _getVehiclesQueryHandler;
+    private readonly ICqrsMediatr _mediatr;
 
-    public VehiclesController(IQueryHandler<GetVehiclesQuery, List<object>> getVehiclesQueryHandler
-        )
+    public VehiclesController(ICqrsMediatr mediatr)
     {
-        _getVehiclesQueryHandler = getVehiclesQueryHandler;
+        _mediatr = mediatr;
     }
 
     [HttpGet]
@@ -27,7 +24,7 @@ public class VehiclesController : ControllerBase
         try
         {
             var query = new GetVehiclesQuery(vehicleType);
-            var result = await _getVehiclesQueryHandler.HandleAsync(query);
+            var result = await _mediatr.QueryAsync(query);
             return Ok(result);
         }
         catch (ArgumentException ex)

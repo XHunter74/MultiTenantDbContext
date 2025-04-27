@@ -4,8 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using MultiTenantDbContext.Data.Admin;
 using System.Text;
 using MultiTenantDbContext.Extensions;
-using MultiTenantDbContext.CQRS;
 using MultiTenantDbContext.Features.Queries;
+using MultiTenantDbContext.CQRS;
 
 namespace MultiTenantDbContext;
 
@@ -44,7 +44,7 @@ public class Startup
                 options.UseNpgsql(Configuration.GetConnectionString("AdminConnection")));
         services.ConfigureCustomerContext();
 
-        services.AddScoped<IQueryHandler<GetVehiclesQuery, List<object>>, GetVehiclesQueryHandler>();
+        services.AddCqrsMediatr(typeof(Startup));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

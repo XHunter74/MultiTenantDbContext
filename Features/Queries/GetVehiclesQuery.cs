@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MultiTenantDbContext.CQRS;
+﻿using CQRSMediatr.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using MultiTenantDbContext.Data.Customer;
 using MultiTenantDbContext.Factories;
 
